@@ -1,0 +1,9 @@
+If n is ended with 0, f(n)/f(n-1) can't be so little as 123456789/987654321.
+
+If n is ended with 1, let's denote n as Shortened Binary Expansion "<one2>,<zero1>,<one1>",
+then f(n-1)/f(n) = (one1-1)+(1+one2*(zero1+1))/(1+one2*zero1) = 987654321/123456789
+=> one1+one2/(1+one2*zero1)=8+1/13717421
+
+For smallest n, => one2=1, zero1=13717420, one1=8
+
+So the answer is 1,13717420,8

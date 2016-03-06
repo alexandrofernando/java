@@ -1,0 +1,4 @@
+Sum of all the multiples of 3 below 1000: S3=3+6+...+999=166833
+Sum of all the multiples of 5 below 1000: S5=5+10+...+995=99500
+Sum of all the multiples of 15 below 1000: S15=15+30+...+990=33165
+Answer=S3+S5-S15=233168

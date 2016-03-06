@@ -1,0 +1,72 @@
+If,
+R_woCarry(d) - the count of d-digit reversible number for which the sum [ n + reverse(n) ] consists of d odd (decimal) digits, leading zeroes are not allowed in either n or reverse(n).
+R_wCarry(d) - the count of d-digit reversible number for which the sum [ n + reverse(n) ] consists of (d+1) odd (decimal) digits, leading zeroes are not allowed in either n or reverse(n).
+R_woCarry_0(d) - same as R_woCarry(d), except leading zeroes are allowed in either n or reverse(n).
+R_wCarry_0(d) - same as R_wCarry(d), except leading zeroes are allowed in either n or reverse(n).
+R(d) - the count of d-digit reversible number.
+Then,
+R(d) = R_woCarry(d) + R_wCarry(d)
+R_woCarry(d) = 20 * R_woCarry_0(d-2) [since (first digit,last digit) can be (1,2), (1,4), (1,6), (1,8), (2,1), (2,3), (2,5), (2,7), (3,2), (3,4), (3,6), (4,1), (4,3), (4,5), (5,2), (5,4), (6,1), (6,3), (7,2), (8,1)]
+R_wCarry(d) = 20 * 25 * R_wCarry_0(d-4) [since (first digit,last digit) can be (2,9), (3,8), (4,7), (4,9), (5,6), (5,8), (6,5), (6,7), (6,9), (7,4), (7,6), (7,8), (8,3), (8,5), (8,7), (8,9), (9,2), (9,4), (9,6), (9,8)], [since (first 2nd digit, last 2nd digit) can be (0,0), (0,2), (0,4), (0,6), (0,8), (1,1), (1,3), (1,5), (1,7), (2,0), (2,2), (2,4), (2,6), (3,1), (3,3), (3,5), (4,0), (4,2), (4,4), (5,1), (5,3), (6,0), (6,2), (7,1), (8,0)]
+R_woCarry_0(d) = 30 * R_woCarry_0(d-2) [since (first digit,last digit) can be (0,1), (0,3), (0,5), (0,7), (0,9), (1,0), (1,2), (1,4), (1,6), (1,8), (2,1), (2,3), (2,5), (2,7), (3,0), (3,2), (3,4), (3,6), (4,1), (4,3), (4,5), (5,0), (5,2), (5,4), (6,1), (6,3), (7,0), (7,2), (8,1), (9,0)]
+R_wCarry_0(d) = R_wCarry(d) 
+
+
+R_woCarry_0(0) = 1
+R_wCarry_0(0) = 0
+
+R_woCarry(1) = 0
+R_wCarry(1) = 0
+R_woCarry_0(1) = 0
+R_wCarry_0(1) = 0
+R(1) = R_woCarry(1) + R_wCarry(1) = 0
+
+R_woCarry(2) = 20 * R_woCarry_0(0) = 20
+R_wCarry(2) = 0
+R_woCarry_0(2) = 30 * R_woCarry_0(0) = 30
+R_wCarry_0(2) = R_wCarry(2) = 0
+R(2) = R_woCarry(2) + R_wCarry(2) = 20
+
+R_woCarry(3) = 20 * R_woCarry_0(1) = 0
+R_wCarry(3) = 20 * 5 = 100 (since 2nd digit can be 0, 1, 2, 3, 4)
+R_woCarry_0(3) = 30 * R_woCarry_0(1) = 0
+R_wCarry_0(3) = R_wCarry(3) = 100
+R(3) = R_woCarry(3) + R_wCarry(3) = 100
+
+R_woCarry(4) = 20 * R_woCarry_0(2) = 600
+R_wCarry(4) = 20 * 25 * R_wCarry_0(0) = 0
+R_woCarry_0(4) = 30 * R_woCarry_0(2) = 900
+R_wCarry_0(4) = R_wCarry(4) = 0
+R(4) = R_woCarry(4) + R_wCarry(4) = 600
+
+R_woCarry(5) = 20 * R_woCarry_0(3) = 0
+R_wCarry(5) = 20 * 25 * R_wCarry_0(1) = 0
+R_woCarry_0(5) = 30 * R_woCarry_0(3) = 0
+R_wCarry_0(5) = R_wCarry(5) = 0
+R(5) = R_woCarry(5) + R_wCarry(5) = 0
+
+R_woCarry(6) = 20 * R_woCarry_0(4) = 18000
+R_wCarry(6) = 20 * 25 * R_wCarry_0(2) = 0
+R_woCarry_0(6) = 30 * R_woCarry_0(4) = 27000
+R_wCarry_0(6) = R_wCarry(6) = 0
+R(6) = R_woCarry(6) + R_wCarry(6) = 18000
+
+R_woCarry(7) = 20 * R_woCarry_0(5) = 0
+R_wCarry(7) = 20 * 25 * R_wCarry_0(3) = 50000
+R_woCarry_0(7) = 30 * R_woCarry_0(5) = 0
+R_wCarry_0(7) = R_wCarry(7) = 50000
+R(7) = R_woCarry(7) + R_wCarry(7) = 50000
+
+R_woCarry(8) = 20 * R_woCarry_0(6) = 540000
+R_wCarry(8) = 20 * 25 * R_wCarry_0(4) = 0
+R_woCarry_0(8) = 30 * R_woCarry_0(6) = 810000
+R_wCarry_0(8) = R_wCarry(8) = 0
+R(8) = R_woCarry(8) + R_wCarry(8) = 540000
+
+R_woCarry(9) = 20 * R_woCarry_0(7) = 0
+R_wCarry(9) = 20 * 25 * R_wCarry_0(5) = 0
+R_woCarry_0(9) = 30 * R_woCarry_0(7) = 0
+R_wCarry_0(9) = R_wCarry(9) = 0
+R(9) = R_woCarry(9) + R_wCarry(9) = 0
+
+Answer = R(1) + R(2) + R(3) + R(4) + R(5) + R(6) + R(7) + R(8) + R(9) = 0 + 20 + 100 + 600 + 0 + 18000 + 50000 + 540000 + 0 = 608720

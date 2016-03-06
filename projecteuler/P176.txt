@@ -1,0 +1,13 @@
+Let C(N) = Number of different integer sided rectangular triangles with a cathetus N.
+
+If N is even number: N = 2^n0 * 3^n1 * 5^n2 * ...* pm^nm, then C(N) = ((n0*2+1)*(n1*2+1)*...*(nm*2+1)-2*(n1*2+1)*(n2*2+1)*...*(nm*2+1)-1)/2 = ((n0*2-1)*(n1*2+1)*...*(nm*2+1)-1)/2
+If N is odd number: N = 3^n1 * 5^n2 * ... * pm^nm, then C(N) = ((n1*2+1)*(n2*2+1)*...*(nm*2+1)-1)/2
+
+Considering C(N) = 47547, 
+(n0*2-1)*(n1*2+1)*...*(nm*2+1) for even N or (n1*2+1)*(n2*2+1)*...*(nm*2+1) for odd N should be:
+C(N) * 2 + 1 = 95095 = 19 * 13 * 11 * 7 * 5
+
+If N is even, min(N) = 2^10 * 3^6 * 5^5 * 7^3 * 11^2 = 96818198400000
+If N is odd, min(N) = 3^9 * 5^6 * 7^5 * 11^3 * 13^2 = 1162696268468109375
+
+In all, min(N) = 96818198400000.

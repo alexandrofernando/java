@@ -1,0 +1,25 @@
+1-9: one two three four five six seven eight nine  Num1_9=36
+10-19: ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen Num10_19=70
+20-29: twenty twenty-one ... twenty-nine			Num20_29=6*10+Num1_9
+30-39: thirty thirty-one ... thirty-nine			Num30_39=6*10+Num1_9
+40-49: forty forty-one ... forty-nine					Num40_49=5*10+Num1_9
+50-59: fifty fifty-one ... fifty-nine					Num50_59=5*10+Num1_9
+60-69: sixty sixty-one ... sixty-nine					Num60_69=5*10+Num1_9
+70-79: seventy seventy-one ... seventy-nine		Num70_79=7*10+Num1_9
+80-89: eighty eighty-one ... eighty-nine			Num80_89=6*10+Num1_9
+90-99: ninety ninety-one ... ninety-nine			Num90_99=6*10+Num1_9
+
+1-99: Num1_99=Num1_9*9+Num10_19+(6+6+5+5+5+7+6+6)*10=36*9+70+(6+6+5+5+5+7+6+6)*10=854
+
+100-199: one-hundred one-hundred-and-one ... one-hundred-and-ninety-nine	Num100_199=(3+7)*100+3*99+Num1_99
+200-299: two-hundred two-hundred-and-one ... two-hundred-and-ninety-nine	Num200_299=(3+7)*100+3*99+Num1_99
+...
+900-999: nine-hundred nine-hundred-and-one ... nine-hundred-and-ninety-nine	Num900_999=(4+7)*100+3*99+Num1_99
+
+100-999: Num100_999=(Num1_9+7*9)*100+(3*99+Num1_99)*9=(36+63)*100+(3*99+854)*9=20259
+
+1000: one-thousand	Num1000=11
+
+1-1000: Num1_1000=Num1_99+Num100_999+Num1000=854+20259+11=21124
+
+Answer=Num1_1000=21124
