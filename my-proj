@@ -1,0 +1,143 @@
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
+
+import java.util.concurrent.ConcurrentSkipListMap;
+
+
+/**
+ * 
+ */
+
+/**
+ * @author User
+ *
+ */
+
+public class CumRetCalculator {
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+	/**
+	 * 
+	 */
+	private ConcurrentSkipListMap<Date, Double> DailyReturn;
+
+
+	public synchronized ConcurrentSkipListMap<Date, Double> getDailyReturn() {
+		return DailyReturn;
+	}
+
+	public synchronized void setDailyReturn(ConcurrentSkipListMap<Date, Double> dailyReturn) {
+		DailyReturn = dailyReturn;
+	}
+
+	public CumRetCalculator() throws NumberFormatException, ParseException {
+		// TODO Auto-generated constructor stub
+
+		DailyReturn = new ConcurrentSkipListMap<Date, Double>();
+
+		String[][] input = {
+
+				{ "2015-01-01", /* ----> */ "0.10" },
+				{ "2015-02-10", /* ----> */ "0.05" },
+				{ "2015-04-10", /* ----> */ "0.15" }, 
+														
+				{ "2015-04-15", /* ----> */ "-0.10" },
+				{ "2015-06-10", /* ----> */ "-0.12" } };
+
+		for (String[] in : input) {
+			DailyReturn.put(sdf.parse(in[0]), Double.parseDouble(in[1]));
+		}
+
+		DailyReturn.forEach((k, v) -> System.out.println("Key : " + sdf.format(k) + " Value : " + v));
+
+	}
+
+	public CumRetCalculator(Map<Date, Double> DailyReturns) {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+
+	double findCumRetReturn(Date asof, Date base) {
+
+		double result = DailyReturn.entrySet().stream().parallel()
+				.filter(map -> !(map.getKey().after(base) || map.getKey().after(asof))).mapToDouble(Map.Entry::getValue)
+				.reduce((mult, n) -> mult * (n + 1)).orElse(1);
+
+		return result - 1;
+
+	}
+
+	/**
+	 * @param args
+	 * @throws ParseException
+	 */
+	public static void main(String[] args) throws ParseException {
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		String baseDate = "2015-02-01";
+		String[] input = { "2015-01-31", "2015-02-28", "2015-03-13", "2015-04-30", "2015-05-08", "2015-06-30" };
+
+		CumRetCalculator cumRetCalculator = new CumRetCalculator();
+		
+		System.out.println("Here is your cumulative rate of return:"+ cumRetCalculator.findCumRetReturn(sdf.parse(input[1]), sdf.parse(baseDate)));
+
+	}
+
+
+}
+//
+//CR = [(1+DR1) * (1+DR2) * (1+DR3)*..] - 1.0 can be summarized as :
+//
+//ASSET RETURN CALCULATIONS (IRR)
+//return is that equal positive and negative percentage changes do not affect wealth
+//symmetrically.
+//
+//Time-Weighted Rate of Return (TWRR)
+//
+//The Holy Grail of portfolio performance benchmarking is the time-weighted rate of return (TWRR). 
+//That requires daily portfolio valuations whenever an external cash flow
+// Periods in which external cash flows occur are divided into sub-periods,
+// each with its own total return calculation.  
+// These sub-period returns are then geometrically linked together to obtain the time-weighted rate of return
+// over the measurement period (“geometric linking” is just a fancy way of saying “add 1 to each sub-period return,
+// multiply the sub-period returns together, and then subtract 1 from the result”).  
+// 
+// I used ConcurrentSkipListMap
+//ConcurrentSkipListMap, because it guarantees average O(log(n)) performance on a wide variety of operations.
+// ConcurrentSkipListMap also has a number of operations that ConcurrentHashMap doesn't: ceilingEntry/Key, floorEntry/Key, etc.
+// It also maintains a sort order, which would otherwise have to be calculated .
+// 
+// 
+// I took advantage of the skip list feature  that allows fast search in an ordered sequence of elements. 
+// This is built using multiple sequence of layers. The lowest layer linking all the elements by a linked list
+// and subsequent layers above skips some elements in between the links. 
+// Thus the highest layer contains the least number of elements in the linked sequence. 
+// The elements that are to be sipped in between are chosen probabilistically.
+// 
+// 
+// i also use parallel stream 
+// 
+//  Because of the increase of the number of cpu cores and the lower hardware cost which allows cheaper cluster-systems.
+//
+//Java 8 cares for this fact with the new stream API and the simplification of creating parallel processing on collections and arrays. 
+//
+//Let’s say we have larger list of  is a List of Double, containing 50 000.000 Double values. The way to sum-up and multiply this values  
+//using a for each loop would slow down the process.
+//
+//Splitting a collection, managing the fork and join tasks, object creation and garbage collecting is an algorithmic overhead as well.
+// This is only worthwhile when the work that has to be done on the cpu cores.
+// 
+// SO parallel stream makes the difference.
+// 
+// By adding a parallel() method to the stream, we are asking the library to deal with the complexities of threading.
+// The library will take charge and control the process of forking out the tasks by utilizing and running the operations at the same time on 
+// all cores using whatever strategy it can find.
+// 
+//  They allow us to parallelize the load that comes with heavy operations without having to write any parallel code with garbage collection.
